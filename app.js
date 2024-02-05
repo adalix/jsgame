@@ -15,6 +15,7 @@ function appendRobotElement(parent) {
   div.style.left = robot.x + "px";
   div.style.width = robot.size + "px";
   div.style.height = robot.size + "px";
+  div.style.zIndex = 100;
   div.style.backgroundColor = robot.color;
   parent.appendChild(div);
 }
@@ -38,6 +39,8 @@ function render() {
 
 canvas.addEventListener("click", (e) => {
   foods.push({ x: e.clientX, y: e.clientY, size: 40, index: foods.length });
+  console.log( 'food ' + e.clientX, e.clientY, foods.length)
+
   render();
 });
 
@@ -69,16 +72,39 @@ canvas.addEventListener("keypress", (e) => {
     if (robot[field] < 0) {
       robot[field] = step;
     }
-    console.log(robot);
+
     const filterFoods = foods.filter((food) => {
-      return (
+      let tleft = (
         robot.y >= food.y &&
         robot.y <= food.y + food.size &&
         robot.x >= food.x &&
         robot.x <= food.x + food.size
       );
+      let tright = (
+        robot.y >= food.y &&
+        robot.y <= food.y + food.size &&
+       (robot.x + robot.size) >= food.x &&
+       (robot.x + robot.size) <= food.x + food.size
+      );
+      let bleft = (
+        (robot.y + robot.size) >= food.y &&
+        (robot.y + robot.size) <= food.y + food.size &&
+        robot.x >= food.x &&
+        robot.x <= food.x + food.size
+      );
+      let bright = (
+        (robot.y + robot.size) >= food.y &&
+        (robot.y + robot.size) <= food.y + food.size &&
+        (robot.x + robot.size) >= food.x &&
+        (robot.x + robot.size) <= food.x + food.size
+      );
+
+      return (
+        tleft || tright || bleft || bright
+      );
     });
 
+    console.log( 'food ' + foods.length)
     if (filterFoods.length > 0) {
       for (let f = 0; f < filterFoods.length; f++) {
         let ff = filterFoods[f];
