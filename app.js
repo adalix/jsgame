@@ -1,6 +1,6 @@
 const canvas = document.getElementById("canvas");
 let foods = [];
-const robot = { color: "green", x: 10, y: 10, size: 40 };
+const robot = { x: 10, y: 10, size: 40 };
 
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
@@ -39,6 +39,18 @@ function render() {
   foods.forEach((f) => appendFoodElement(canvas, f));
 }
 
+function createRandomFoods() {
+  for(let i = 0; i<10 ; i++){
+    foods.push({ x: Math.floor(Math.random() * window.innerWidth), y: Math.floor(Math.random() * window.innerHeight), size: 40});
+  }
+}
+
+function initgame(){
+  canvas.focus();
+  createRandomFoods();
+  render();
+}
+
 canvas.addEventListener("keypress", (e) => {
   let amount = 0;
   let field = undefined;
@@ -64,8 +76,14 @@ console.log('field', field);
   if (field) {
     console.log(field, amount, robot);
     robot[field] += amount;
+    console.log('robot field: ', robot[field], field);
+    console.log(window.innerHeight, window.innerWidth);
     if (robot[field] < 0) {
-      robot[field] = step;
+      if (field === 'x') robot[field] = window.innerWidth - 10;
+      if (field === 'y') robot[field] = window.innerHeight - 10;
+    } else if ((field === 'y' && robot[field] > window.innerHeight) || (field === 'x' && robot[field] > window.innerWidth)) {
+      if (field === 'x') robot[field] = 10;
+      if (field === 'y') robot[field] = 10;
     }
 
     const filterFoods = foods.filter((food) => {
@@ -93,17 +111,23 @@ console.log('field', field);
       return tleft || tright || bleft || bright;
     });
 
+    console.log('foods', filterFoods)
     if (filterFoods.length > 0) {
       for (let f = 0; f < filterFoods.length; f++) {
         let ff = filterFoods[f];
         foods = foods.filter((el) => {
-          return (el.index !== ff.index);
+          return (el.x !== ff.x && el.y !== ff.y);
         });
       }
+    }
+
+    console.log('remaining food count: ', foods.length);
+    if (foods.length === 0) {
+      createRandomFoods();
     }
 
     render();
   }
 });
 
-render();
+initgame()
