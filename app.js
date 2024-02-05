@@ -41,7 +41,7 @@ function render() {
 
 function createRandomFoods() {
   for(let i = 0; i<10 ; i++){
-    foods.push({ x: Math.floor(Math.random() * window.innerWidth), y: Math.floor(Math.random() * window.innerHeight), size: 40});
+    foods.push({ x: Math.floor(Math.random() * (window.innerWidth - 40)), y: Math.floor(Math.random() * (window.innerHeight - 40)), size: 40});
   }
 }
 
@@ -79,8 +79,8 @@ console.log('field', field);
     console.log('robot field: ', robot[field], field);
     console.log(window.innerHeight, window.innerWidth);
     if (robot[field] < 0) {
-      if (field === 'x') robot[field] = window.innerWidth - 10;
-      if (field === 'y') robot[field] = window.innerHeight - 10;
+      if (field === 'x') robot[field] = window.innerWidth - robot.size;
+      if (field === 'y') robot[field] = window.innerHeight - robot.size;
     } else if ((field === 'y' && robot[field] > window.innerHeight) || (field === 'x' && robot[field] > window.innerWidth)) {
       if (field === 'x') robot[field] = 10;
       if (field === 'y') robot[field] = 10;
