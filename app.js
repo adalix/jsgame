@@ -1,6 +1,27 @@
 const canvas = document.getElementById("canvas");
+const info = document.querySelector('.info');
+
 let foods = [];
 const robot = { x: 10, y: 10, size: 40 };
+
+
+let time = 10;
+const timerInfo = document.createElement('p');
+  timerInfo.classList.add("time");
+
+const timer = setInterval(() => {
+  timerInfo.innerHTML = `Time:${time}`;
+  console.log(time)
+
+  info.prepend(timerInfo)
+    if(time <= 0){
+      clearInterval(timer)
+      console.log("time is up")
+    }
+    time--;
+
+}, 1000);
+
 
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
@@ -48,6 +69,7 @@ function createRandomFoods() {
 function initgame(){
   canvas.focus();
   createRandomFoods();
+  timer;
   render();
 }
 
