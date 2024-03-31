@@ -69,11 +69,11 @@ function createRandomFoods() {
 function initgame(){
   canvas.focus();
   createRandomFoods();
-  timer;
   render();
 }
 
 canvas.addEventListener("keypress", (e) => {
+
   let amount = 0;
   let field = undefined;
   let step = 40;
@@ -149,6 +149,7 @@ console.log('field', field);
     }
 
     render();
+    
   }
 });
 
